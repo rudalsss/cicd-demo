@@ -8,11 +8,12 @@ pipeline{
         }
         stage("push image"){
             steps{
-                sh 'cd nodejs'
-                script{
-                   docker.withRegistry('https://myregistry.com','registry-auth'){
-                       myapp = docker.build("myregistry.com/library/hello:${env.BUILD_ID}")
-                       myapp.push()
+                dir("nodejs") { 
+                    script {
+                        docker.withRegistry('https://myregistry.com', 'registry-auth') {
+                            myapp = docker.build("myregistry.com/library/hello:${env.BUILD_ID}")
+                            myapp.push()
+                        }
                     }
                 }
             }
