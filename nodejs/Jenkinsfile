@@ -1,0 +1,23 @@
+pipeline{
+    agent any
+    tools {
+      dockerTool 'docker'
+    }
+    stages{
+        stage("checkout"){
+            steps{
+                checkout scm
+            }
+        }
+        stage("push image"){
+            steps{
+                script{
+                   docker.withRegistry('https://myregistry.com','registry-auth'){
+                       myapp = docker.build("myregistry.com/library/hello:${env.BUILD_ID}")
+                       myapp.push()
+                    }
+                }
+            }
+        }
+    }
+}
