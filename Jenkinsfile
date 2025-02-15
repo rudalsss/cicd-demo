@@ -16,9 +16,11 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                script {
-                    // Docker 이미지 빌드
-                    def app = docker.build("backend:${IMAGE_TAG}")
+                dir('backend') {  // backend 디렉토리로 이동
+                    script {
+                        // Docker 이미지 빌드
+                        def app = docker.build("backend:${IMAGE_TAG}")
+                    }
                 }
             }
         }
@@ -34,7 +36,7 @@ pipeline {
                         }
                     }
 
-                    // 푸시 후 이미지 확인 (ouptut 콘솔)
+                    // 푸시 후 이미지 확인 (output 콘솔)
                     sh "aws ecr describe-images --repository-name jenkins-images --region ${AWS_REGION}"
                 }
             }
