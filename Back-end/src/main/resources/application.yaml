@@ -1,0 +1,54 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: oliveback
+
+  # H2 Setting Info (H2 Console? ???? ?? ???? ??)
+  h2:
+    console:
+      enabled: true  # H2 Console? ???? ?? (H2 Console? H2 Database? UI? ????? ??)
+      path: /h2-console  # H2 Console? Path
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+    show-sql: true
+
+  #  jwt:
+  #    secret: thisisaverysecretkeyforjwt123456  # 테스트용
+
+
+  profiles:
+    active: local
+
+  logging:
+    level:
+      org.springframework.web: DEBUG  # HTTP 요청과 응답에 관련된 디버그 레벨 로그
+      org.springframework.security: DEBUG  # 보안 관련 로그
+      root: DEBUG  # 루트 로그 레벨을 디버그로 설정하여 모든 로그를 디버깅할 수 있도록 함
+
+# 버전호환문제로 안된다...
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+
+# 브라우저에서 헬스 체크 엔드포인트(/actuator/health)에 접속하여 애플리케이션이 정상적으로 동작하는지 확인
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+
